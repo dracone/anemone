@@ -162,7 +162,7 @@ module Anemone
 
       loop do
         page = page_queue.deq
-        @pages << page.url
+        @pages << page.url.to_s
         puts "#{page.url} Queue: #{link_queue.size}" if @opts[:verbose]
         do_page_blocks page
         page.discard_doc! if @opts[:discard_page_bodies]
