@@ -219,7 +219,7 @@ module Anemone
     # Execute the after_crawl blocks
     #
     def do_after_crawl_blocks
-      @after_crawl_blocks.each { |block| block.call(@pages) }
+     # @after_crawl_blocks.each { |block| block.call(@pages) }
     end
 
     #
