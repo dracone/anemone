@@ -50,7 +50,7 @@ module Anemone
       :accept_cookies => false,
       # skip any link with a query string? e.g. http://foo.com/?u=user
       :skip_query_strings => false,
-      # proxy server hostname 
+      # proxy server hostname
       :proxy_host => nil,
       # proxy server port number
       :proxy_port => false,
@@ -162,7 +162,7 @@ module Anemone
 
       loop do
         page = page_queue.deq
-        @pages.touch_key page.url
+       # @pages.touch_key page.url
         puts "#{page.url} Queue: #{link_queue.size}" if @opts[:verbose]
         do_page_blocks page
         page.discard_doc! if @opts[:discard_page_bodies]
@@ -171,9 +171,9 @@ module Anemone
         links.each do |link|
           link_queue << [link, page.url.dup, page.depth + 1]
         end
-        @pages.touch_keys links
+        #@pages.touch_keys links
 
-        @pages[page.url] = page
+        #@pages[page.url] = page
 
         # if we are done with the crawl, tell the threads to end
         if link_queue.empty? and page_queue.empty?
@@ -197,8 +197,8 @@ module Anemone
     def process_options
       @opts = DEFAULT_OPTS.merge @opts
       @opts[:threads] = 1 if @opts[:delay] > 0
-      storage = Anemone::Storage::Base.new(@opts[:storage] || Anemone::Storage.Hash)
-      @pages = PageStore.new(storage)
+      #storage = Anemone::Storage::Base.new(@opts[:storage] || Anemone::Storage.Hash)
+      #@pages = PageStore.new(storage)
       @robots = Robotex.new(@opts[:user_agent]) if @opts[:obey_robots_txt]
 
       freeze_options
@@ -252,7 +252,7 @@ module Anemone
     # Returns +false+ otherwise.
     #
     def visit_link?(link, from_page = nil)
-      !@pages.has_page?(link) &&
+      #!@pages.has_page?(link) &&
       !skip_link?(link) &&
       !skip_query_string?(link) &&
       allowed(link) &&
@@ -281,7 +281,7 @@ module Anemone
         false
       end
     end
-    
+
     #
     # Returns +true+ if *link* should not be visited because
     # it has a query string and +skip_query_strings+ is true.
