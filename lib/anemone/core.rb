@@ -162,7 +162,7 @@ module Anemone
 
       loop do
         page = page_queue.deq
-       # @pages.touch_key page.url
+        @pages << page.url
         puts "#{page.url} Queue: #{link_queue.size}" if @opts[:verbose]
         do_page_blocks page
         page.discard_doc! if @opts[:discard_page_bodies]
@@ -199,6 +199,7 @@ module Anemone
       @opts[:threads] = 1 if @opts[:delay] > 0
       #storage = Anemone::Storage::Base.new(@opts[:storage] || Anemone::Storage.Hash)
       #@pages = PageStore.new(storage)
+      @pages = []
       @robots = Robotex.new(@opts[:user_agent]) if @opts[:obey_robots_txt]
 
       freeze_options
@@ -252,7 +253,7 @@ module Anemone
     # Returns +false+ otherwise.
     #
     def visit_link?(link, from_page = nil)
-      #!@pages.has_page?(link) &&
+      !@pages.include?(link) &&
       !skip_link?(link) &&
       !skip_query_string?(link) &&
       allowed(link) &&
